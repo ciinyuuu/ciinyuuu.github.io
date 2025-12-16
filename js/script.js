@@ -14,7 +14,7 @@ function drawWheel(options) {
 
   // 🎨 指定顏色循環
   const colors = [
-    "#fde2e4", // 淡粉
+    "#f8cdda", // 粉玫瑰
     "#f3e8ff", // 淡紫
     "#e0ecff"  // 淡藍
   ];

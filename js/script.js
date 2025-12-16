@@ -1,5 +1,6 @@
 let angle = 0;
 let soundOn = true;
+let sliceElements = [];
 
 function toggleSound() {
   soundOn = !soundOn;
@@ -7,16 +8,16 @@ function toggleSound() {
     soundOn ? "🔊 音效：開" : "🔇 音效：關";
 }
 
-// 🎡 建立輪盤（白 / 淡紫 / 淡藍 循環）
+// 🎡 建立輪盤（淡粉色系＋文字）
 function drawWheel(options) {
   const wheel = document.getElementById("wheel");
   wheel.innerHTML = "";
+  sliceElements = [];
 
-  // 🎨 指定顏色循環
   const colors = [
-    "#f8cdda", // 粉玫瑰
-    "#f3e8ff", // 淡紫
-    "#e0ecff"  // 淡藍
+    "#fde2e4",
+    "#f8cdda",
+    "#fbcfe8"
   ];
 
   const slice = 360 / options.length;
@@ -25,14 +26,28 @@ function drawWheel(options) {
   options.forEach((opt, i) => {
     gradient += `${colors[i % colors.length]} ${i * slice}deg ${(i + 1) * slice}deg,`;
 
+    // 🎯 建立色塊標記元素（用來閃爍）
+    const sliceMark = document.createElement("div");
+    sliceMark.style.position = "absolute";
+    sliceMark.style.width = "100%";
+    sliceMark.style.height = "100%";
+    sliceMark.style.borderRadius = "50%";
+    sliceMark.style.clipPath =
+      `polygon(50% 50%, 100% 0, 100% 100%)`;
+    sliceMark.style.transform =
+      `rotate(${i * slice}deg)`;
+    sliceMark.dataset.index = i;
+
+    sliceElements.push(sliceMark);
+    wheel.appendChild(sliceMark);
+
+    // 📝 色塊文字
     const text = document.createElement("div");
     text.className = "slice-text";
-
-    // ⭐ 文字放在色塊正中央
     text.style.transform =
-      `rotate(${i * slice + slice / 2}deg) translate(130px) ;
-
+      `rotate(${i * slice + slice / 2}deg) translate(140px)`;
     text.innerText = opt;
+
     wheel.appendChild(text);
   });
 
@@ -53,7 +68,7 @@ function spin() {
   const slice = 360 / options.length;
   const index = Math.floor(Math.random() * options.length);
 
-  // 🎯 對準指針（正上方）
+  // 🎯 指針對應角度
   const targetAngle = 360 - (index * slice + slice / 2);
   angle += 360 * 5 + targetAngle;
 
@@ -63,12 +78,19 @@ function spin() {
     spinSound.play();
   }
 
-  document.getElementById("wheel").style.transform =
-    `rotate(${angle}deg)`;
+  const wheel = document.getElementById("wheel");
+  wheel.style.transform = `rotate(${angle}deg)`;
 
   setTimeout(() => {
     document.getElementById("result").innerText =
       "🎉 抽到：" + options[index];
+
+    // ⭐ 加上閃爍效果
+    sliceElements[index].classList.add("highlight");
+
+    setTimeout(() => {
+      sliceElements[index].classList.remove("highlight");
+    }, 1600);
 
     if (soundOn) {
       const winSound = document.getElementById("winSound");

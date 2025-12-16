@@ -88,3 +88,15 @@ button {
   font-size: 22px;
   margin-top: 15px;
 }
+svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.slice-text {
+  font-size: 14px;
+  font-weight: bold;
+  fill: #333;
+  text-anchor: middle;
+}

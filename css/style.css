@@ -1,12 +1,12 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: #f6f7fb;
   text-align: center;
 }
 
 header {
-  background: #333;
+  background: #4b4b4b;
   color: white;
   padding: 15px;
 }
@@ -18,13 +18,21 @@ main {
 textarea {
   width: 240px;
   height: 110px;
+  font-size: 14px;
 }
 
 select, button {
   margin: 8px;
-  padding: 8px 12px;
+  padding: 8px 14px;
   font-size: 16px;
   cursor: pointer;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  background: #a5b4fc;
+  color: #333;
 }
 
 .wheel-container {
@@ -39,19 +47,21 @@ select, button {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  border: 8px solid black;
+  border: 8px solid #444;
   transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
+/* 🎨 色塊文字 */
 .slice-text {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 45%;
+  width: 50%;
   transform-origin: 0% 0%;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: bold;
-  text-align: left;
+  color: #333;
+  text-align: center;
 }
 
 .pointer {

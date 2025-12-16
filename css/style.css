@@ -34,7 +34,16 @@ button {
   background: #a5b4fc;
   color: #333;
 }
+/* 🎯 中獎色塊閃爍效果 */
+@keyframes flash {
+  0%   { filter: brightness(1); }
+  50%  { filter: brightness(1.5); }
+  100% { filter: brightness(1); }
+}
 
+.highlight {
+  animation: flash 0.8s ease-in-out 2;
+}
 .wheel-container {
   position: relative;
   margin: 30px auto;

@@ -14,7 +14,7 @@ function drawWheel(options) {
 
   // 🎨 指定顏色循環
   const colors = [
-    "#ffffff", // 白
+    "#fde2e4", // 淡粉
     "#f3e8ff", // 淡紫
     "#e0ecff"  // 淡藍
   ];
@@ -30,7 +30,7 @@ function drawWheel(options) {
 
     // ⭐ 文字放在色塊正中央
     text.style.transform =
-      `rotate(${i * slice + slice / 2}deg) translate(155px) rotate(90deg)`;
+      `rotate(${i * slice + slice / 2}deg) translate(130px) rotate(90deg)`;
 
     text.innerText = opt;
     wheel.appendChild(text);

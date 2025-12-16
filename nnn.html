@@ -9,64 +9,122 @@
       hello world
   </body>
 </html>
-let used = [];
-let angle = 0;
-let soundOn = true; // 🔊 音效狀態
+roulette-website/
+│
+├── index.html     ← 網站首頁
+├── css/
+│   └── style.css
+├── js/
+│   └── script.js
+├── audio/
+│   ├── spin.mp3
+│   └── win.mp3
+└── README.md
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>輪盤抽籤網站</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
 
-function toggleSound() {
-  soundOn = !soundOn;
-  document.getElementById("soundBtn").innerText =
-    soundOn ? "🔊 音效：開" : "🔇 音效：關";
+<body>
+  <header>
+    <h1>🎡 輪盤抽籤系統</h1>
+  </header>
+
+  <main>
+    <section class="control">
+      <textarea id="options" placeholder="每行輸入一個選項"></textarea>
+
+      <select id="mode">
+        <option value="all">抽過可重複</option>
+        <option value="noRepeat">抽過不重複</option>
+        <option value="odd">只抽單數</option>
+        <option value="even">只抽雙數</option>
+      </select>
+
+      <div class="buttons">
+        <button onclick="spin()">開始抽籤</button>
+        <button onclick="toggleSound()" id="soundBtn">🔊 音效：開</button>
+      </div>
+    </section>
+
+    <section class="wheel-area">
+      <div class="wheel-container">
+        <div id="wheel"></div>
+        <div class="pointer">▲</div>
+      </div>
+      <p id="result">請開始抽籤</p>
+    </section>
+  </main>
+
+  <!-- 音效 -->
+  <audio id="spinSound" src="audio/spin.mp3"></audio>
+  <audio id="winSound" src="audio/win.mp3"></audio>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  text-align: center;
 }
 
-function spin() {
-  let input = document.getElementById("options").value.trim();
-  let mode = document.getElementById("mode").value;
-  let options = input.split("\n").filter(x => x !== "");
+header {
+  background: #333;
+  color: white;
+  padding: 15px;
+}
 
-  if (mode === "odd") {
-    options = options.filter(x => !isNaN(x) && x % 2 === 1);
-  }
+main {
+  padding: 20px;
+}
 
-  if (mode === "even") {
-    options = options.filter(x => !isNaN(x) && x % 2 === 0);
-  }
+textarea {
+  width: 220px;
+  height: 100px;
+  font-size: 14px;
+}
 
-  if (mode === "noRepeat") {
-    options = options.filter(x => !used.includes(x));
-  }
+select, button {
+  margin: 8px;
+  padding: 8px 12px;
+  font-size: 16px;
+}
 
-  if (options.length === 0) {
-    alert("沒有可抽的選項");
-    return;
-  }
+.wheel-container {
+  position: relative;
+  margin: 30px auto;
+  width: 300px;
+  height: 300px;
+}
 
-  // 🎯 抽結果
-  let pick = options[Math.floor(Math.random() * options.length)];
-  if (mode === "noRepeat") {
-    used.push(pick);
-  }
+#wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 8px solid #000;
+  background: conic-gradient(
+    #ff9999 0deg 90deg,
+    #99ff99 90deg 180deg,
+    #9999ff 180deg 270deg,
+    #ffff99 270deg 360deg
+  );
+  transition: transform 3s ease-out;
+}
 
-  // 🔊 轉動音效
-  if (soundOn) {
-    let spinSound = document.getElementById("spinSound");
-    spinSound.currentTime = 0;
-    spinSound.play();
-  }
+.pointer {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+}
 
-  // 🎡 輪盤旋轉
-  angle += 360 * 5 + Math.floor(Math.random() * 360);
-  document.getElementById("wheel").style.transform =
-    `rotate(${angle}deg)`;
-
-  // ⏱️ 結果顯示 + 中獎音效
-  setTimeout(() => {
-    document.getElementById("result").innerText = "🎉 抽到：" + pick;
-
-    if (soundOn) {
-      let winSound = document.getElementById("winSound");
-      winSound.currentTime = 0;
-      winSound.play();
-    }
-  }, 3000);
+#result {
+  font-size: 20px;
+  margin-top: 15px;
 }

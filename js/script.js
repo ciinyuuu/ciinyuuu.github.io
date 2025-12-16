@@ -45,7 +45,7 @@ function drawWheel(options) {
     const text = document.createElement("div");
     text.className = "slice-text";
     text.style.transform =
-      `rotate(${i * slice + slice / 2}deg) translate(140px)`;
+      `rotate(${i * slice + slice / 2}deg) translate(155px)`;
     text.innerText = opt;
 
     wheel.appendChild(text);

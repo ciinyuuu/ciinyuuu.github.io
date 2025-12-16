@@ -1,6 +1,5 @@
 let angle = 0;
 let soundOn = true;
-let currentOptions = [];
 
 function toggleSound() {
   soundOn = !soundOn;
@@ -8,29 +7,34 @@ function toggleSound() {
     soundOn ? "🔊 音效：開" : "🔇 音效：關";
 }
 
-// 🎨 畫輪盤（顏色＋文字）
+// 🎡 建立輪盤（馬卡龍色＋文字置中）
 function drawWheel(options) {
-  currentOptions = options;
   const wheel = document.getElementById("wheel");
   wheel.innerHTML = "";
 
-  const colors = [
-    "#ff9999", "#99ff99", "#9999ff",
-    "#ffff99", "#ffcc99", "#cc99ff"
+  const pastelColors = [
+    "#ffd6e0", // 粉
+    "#ffe5b4", // 杏
+    "#e2f0cb", // 淡綠
+    "#d7e3fc", // 淡藍
+    "#f3d9fa", // 淡紫
+    "#fff1c1"  // 淡黃
   ];
 
   const slice = 360 / options.length;
   let gradient = "conic-gradient(";
 
   options.forEach((opt, i) => {
-    gradient += `${colors[i % colors.length]} ${i * slice}deg ${(i + 1) * slice}deg,`;
+    gradient += `${pastelColors[i % pastelColors.length]} ${i * slice}deg ${(i + 1) * slice}deg,`;
 
     const text = document.createElement("div");
     text.className = "slice-text";
-    text.style.transform =
-      `rotate(${i * slice + slice / 2}deg) translate(10px, -50%) rotate(90deg)`;
-    text.innerText = opt;
 
+    // ⭐ 文字放在色塊正中央
+    text.style.transform =
+      `rotate(${i * slice + slice / 2}deg) translate(120px) rotate(90deg)`;
+
+    text.innerText = opt;
     wheel.appendChild(text);
   });
 
@@ -38,8 +42,8 @@ function drawWheel(options) {
 }
 
 function spin() {
-  let input = document.getElementById("options").value.trim();
-  let options = input.split("\n").filter(x => x !== "");
+  const input = document.getElementById("options").value.trim();
+  const options = input.split("\n").filter(x => x !== "");
 
   if (options.length < 2) {
     alert("請至少輸入兩個選項");
@@ -48,13 +52,11 @@ function spin() {
 
   drawWheel(options);
 
-  // 🎯 隨機旋轉角度
   const slice = 360 / options.length;
-  const randomIndex = Math.floor(Math.random() * options.length);
+  const index = Math.floor(Math.random() * options.length);
 
-  // 指針在正上方（0 度），所以要反向計算
-  const targetAngle = 360 - (randomIndex * slice + slice / 2);
-
+  // 🎯 對準指針（正上方）
+  const targetAngle = 360 - (index * slice + slice / 2);
   angle += 360 * 5 + targetAngle;
 
   if (soundOn) {
@@ -67,8 +69,8 @@ function spin() {
     `rotate(${angle}deg)`;
 
   setTimeout(() => {
-    const result = options[randomIndex];
-    document.getElementById("result").innerText = "🎯 抽到：" + result;
+    document.getElementById("result").innerText =
+      "🎉 抽到：" + options[index];
 
     if (soundOn) {
       const winSound = document.getElementById("winSound");

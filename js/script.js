@@ -7,33 +7,31 @@ function toggleSound() {
     soundOn ? "🔊 音效：開" : "🔇 音效：關";
 }
 
-// 🎡 建立輪盤（馬卡龍色＋文字置中）
+// 🎡 建立輪盤（白 / 淡紫 / 淡藍 循環）
 function drawWheel(options) {
   const wheel = document.getElementById("wheel");
   wheel.innerHTML = "";
 
-  const pastelColors = [
-    "#ffd6e0", // 粉
-    "#ffe5b4", // 杏
-    "#e2f0cb", // 淡綠
-    "#d7e3fc", // 淡藍
-    "#f3d9fa", // 淡紫
-    "#fff1c1"  // 淡黃
+  // 🎨 指定顏色循環
+  const colors = [
+    "#ffffff", // 白
+    "#f3e8ff", // 淡紫
+    "#e0ecff"  // 淡藍
   ];
 
   const slice = 360 / options.length;
   let gradient = "conic-gradient(";
 
   options.forEach((opt, i) => {
-    gradient += `${pastelColors[i % pastelColors.length]} ${i * slice}deg ${(i + 1) * slice}deg,`;
+    gradient += `${colors[i % colors.length]} ${i * slice}deg ${(i + 1) * slice}deg,`;
 
     const text = document.createElement("div");
     text.className = "slice-text";
 
     // ⭐ 文字放在色塊正中央
     text.style.transform =
-  `rotate(${i * slice + slice / 2}deg) translate(155px) rotate(90deg)`;
-    
+      `rotate(${i * slice + slice / 2}deg) translate(155px) rotate(90deg)`;
+
     text.innerText = opt;
     wheel.appendChild(text);
   });

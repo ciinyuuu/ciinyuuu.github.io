@@ -8,24 +8,75 @@ function toggleSound() {
     soundOn ? "🔊 音效：開" : "🔇 音效：關";
 }
 
-// 🎡 建立輪盤（淡粉色系＋文字）
 function drawWheel(options) {
   const wheel = document.getElementById("wheel");
   wheel.innerHTML = "";
-  sliceElements = [];
 
   const colors = [
     "#fde2e4",
     "#f8cdda",
-    "#fbcfe8"
+    "#fbcfe8",
+    "#f3e8ff", // 淡紫
+    "#e0ecff", // 淡藍
   ];
 
+  const size = 320;
+  const radius = 130;
   const slice = 360 / options.length;
+
   let gradient = "conic-gradient(";
 
-  options.forEach((opt, i) => {
+  // 背景色塊
+  options.forEach((_, i) => {
     gradient += `${colors[i % colors.length]} ${i * slice}deg ${(i + 1) * slice}deg,`;
+  });
+  wheel.style.background = gradient.slice(0, -1) + ")";
 
+  // SVG 弧形文字
+  const svgNS = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNS, "svg");
+  svg.setAttribute("width", size);
+  svg.setAttribute("height", size);
+  svg.setAttribute("viewBox", `0 0 ${size} ${size}`);
+
+  options.forEach((text, i) => {
+    const startAngle = (i * slice - 90) * Math.PI / 180;
+    const endAngle = ((i + 1) * slice - 90) * Math.PI / 180;
+
+    const x1 = size / 2 + radius * Math.cos(startAngle);
+    const y1 = size / 2 + radius * Math.sin(startAngle);
+    const x2 = size / 2 + radius * Math.cos(endAngle);
+    const y2 = size / 2 + radius * Math.sin(endAngle);
+
+    const path = document.createElementNS(svgNS, "path");
+    const pathId = `path-${i}`;
+    path.setAttribute("id", pathId);
+
+    path.setAttribute(
+      "d",
+      `M ${x1} ${y1} A ${radius} ${radius} 0 0 1 ${x2} ${y2}`
+    );
+    path.setAttribute("fill", "none");
+
+    const textEl = document.createElementNS(svgNS, "text");
+    textEl.setAttribute("class", "slice-text");
+
+    const textPath = document.createElementNS(svgNS, "textPath");
+    textPath.setAttributeNS(
+      "http://www.w3.org/1999/xlink",
+      "xlink:href",
+      `#${pathId}`
+    );
+    textPath.setAttribute("startOffset", "50%");
+    textPath.textContent = text;
+
+    textEl.appendChild(textPath);
+    svg.appendChild(path);
+    svg.appendChild(textEl);
+  });
+
+  wheel.appendChild(svg);
+}
     // 🎯 建立色塊標記元素（用來閃爍）
     const sliceMark = document.createElement("div");
     sliceMark.style.position = "absolute";

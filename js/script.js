@@ -1,4 +1,4 @@
-llet angle = 0;
+let angle = 0;
 let soundOn = true;
 let currentOptions = [];
 

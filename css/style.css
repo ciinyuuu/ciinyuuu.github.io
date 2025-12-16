@@ -66,11 +66,14 @@ button {
 
 .pointer {
   position: absolute;
-  top: -22px;
+  top: -10px;              /* 靠近輪盤 */
   left: 50%;
-  transform: translateX(-50%);
-  font-size: 26px;
+  transform: translateX(-50%) rotate(180deg); /* 箭頭朝內 */
+  font-size: 28px;
+  color: #333;
+  z-index: 10;
 }
+
 
 #result {
   font-size: 22px;

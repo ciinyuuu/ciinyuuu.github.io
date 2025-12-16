@@ -32,8 +32,8 @@ function drawWheel(options) {
 
     // ⭐ 文字放在色塊正中央
     text.style.transform =
-      `rotate(${i * slice + slice / 2}deg) translate(120px) rotate(90deg)`;
-
+  `rotate(${i * slice + slice / 2}deg) translate(155px) rotate(90deg)`;
+    
     text.innerText = opt;
     wheel.appendChild(text);
   });

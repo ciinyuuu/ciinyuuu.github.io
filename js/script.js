@@ -130,17 +130,53 @@ function spin() {
   wheel.style.transform = `rotate(${angle}deg)`;
   document.getElementById("result").innerText = "⏳ 抽獎中...";
 
-  setTimeout(() => {
-    document.getElementById("result").innerText = "🎉 抽到：" + options[index];
+  // ... 前面的 spin 邏輯保持不變 ...
 
+  setTimeout(() => {
+    const resultText = options[index];
+    document.getElementById("result").innerText = "🎉 抽到：" + resultText;
+
+    // ✨ 中獎色塊閃爍
     slicePaths[index].classList.add("highlight");
-    setTimeout(() => {
-      slicePaths[index].classList.remove("highlight");
-    }, 1500);
+
+    // 🚩 核心修改：如果是「抽過不重複」模式，則移除該選項
+    if (mode === "noRepeat") {
+      // 1. 從陣列中移除該選項
+      options.splice(index, 1); 
+      
+      // 2. 將剩餘選項接回字串，更新回 textarea
+      document.getElementById("options").value = options.join("\n");
+      
+      // 3. 記錄已使用的索引可以重置了（因為原始名單已經變了）
+      usedIndices = []; 
+
+      // 4. 等閃爍動畫結束後，重新畫一個「縮小版」的轉盤
+      setTimeout(() => {
+        if (options.length >= 2) {
+          drawWheel(options);
+          // 重置轉盤角度到 0，避免下次旋轉角度過大
+          angle = 0;
+          document.getElementById("wheel").style.transition = "none";
+          document.getElementById("wheel").style.transform = `rotate(0deg)`;
+          // 強制瀏覽器重繪，再把 transition 加回來
+          setTimeout(() => {
+            document.getElementById("wheel").style.transition = "transform 4s cubic-bezier(0.15, 0, 0.15, 1)";
+          }, 50);
+        } else {
+          // 如果只剩一個或沒了，清空轉盤
+          document.getElementById("wheel").innerHTML = "<p style='margin-top:140px'>名單已空</p>";
+          document.getElementById("wheel").style.background = "#eee";
+        }
+      }, 1500);
+    } else {
+      // 非不重複模式，只移除閃爍效果
+      setTimeout(() => {
+        slicePaths[index].classList.remove("highlight");
+      }, 1500);
+    }
 
     if (soundOn) {
       winSound.currentTime = 0;
       winSound.play();
     }
   }, 4000);
-}

@@ -2,10 +2,9 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <title>動畫輪盤抽籤網站</title>
+  <title>🎡 萬用動畫輪盤</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
   <header>
     <h1>🎡 輪盤抽籤系統</h1>
@@ -13,17 +12,17 @@
 
   <main>
     <section class="control">
-      <textarea id="options" placeholder="每行輸入一個選項"></textarea>
+      <textarea id="options" placeholder="每行輸入一個選項">選項1\n選項2\n選項3</textarea>
 
       <select id="mode">
         <option value="all">抽過可重複</option>
-        <option value="noRepeat">抽過不重複</option>
-        <option value="odd">只抽單數</option>
-        <option value="even">只抽雙數</option>
+        <option value="noRepeat">抽過不重複（自動刪除）</option>
+        <option value="odd">只抽單數項</option>
+        <option value="even">只抽雙數項</option>
       </select>
 
       <div class="buttons">
-        <button onclick="spin()">開始抽籤</button>
+        <button onclick="spin()" id="spinBtn">開始抽籤</button>
         <button onclick="toggleSound()" id="soundBtn">🔊 音效：開</button>
       </div>
     </section>

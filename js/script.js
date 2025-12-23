@@ -180,3 +180,4 @@ function spin() {
       winSound.play();
     }
   }, 4000);
+}

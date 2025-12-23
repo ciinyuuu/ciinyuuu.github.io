@@ -103,8 +103,20 @@ function spin() {
   const slice = 360 / options.length;
   const index = Math.floor(Math.random() * options.length);
 
-  const targetAngle = 360 - (index * slice + slice / 2);
-  angle += 360 * 5 + targetAngle;
+  // --- 修正後的計算邏輯 ---
+  
+  // 1. 計算這一個 index 應該對準頂部所需的「基礎旋轉角度」
+  // 這裡減去 slice/2 是為了讓指針指在色塊中間
+  const targetRelativeAngle = 360 - (index * slice + slice / 2);
+  
+  // 2. 獲取當前已經轉了多少圈（無條件進位到下一圈，再多轉 5 圈確保動畫感）
+  const currentRounds = Math.ceil(angle / 360);
+  const extraSpins = 5; 
+  
+  // 3. 設定新的絕對角度 = (目前總圈數 + 額外圈數) * 360度 + 目標偏移量
+  angle = (currentRounds + extraSpins) * 360 + targetRelativeAngle;
+
+  // -----------------------
 
   if (soundOn) {
     spinSound.currentTime = 0;
@@ -114,11 +126,12 @@ function spin() {
   const wheel = document.getElementById("wheel");
   wheel.style.transform = `rotate(${angle}deg)`;
 
-  setTimeout(() => {
-    document.getElementById("result").innerText =
-      "🎉 抽到：" + options[index];
+  // 清除之前的結果並等待動畫結束
+  document.getElementById("result").innerText = "抽獎中...";
 
-    // ✨ 中獎色塊閃爍
+  setTimeout(() => {
+    document.getElementById("result").innerText = "🎉 抽到：" + options[index];
+
     slicePaths[index].classList.add("highlight");
     setTimeout(() => {
       slicePaths[index].classList.remove("highlight");
@@ -128,5 +141,5 @@ function spin() {
       winSound.currentTime = 0;
       winSound.play();
     }
-  }, 4000);
+  }, 4000); // 這裡的時間需與 CSS transition 時間一致
 }

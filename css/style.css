@@ -1,6 +1,5 @@
-body { font-family: sans-serif; text-align: center; background: #f4f7f6; }
-.wheel-container { position: relative; width: 320px; height: 320px; margin: 20px auto; }
-
+body { font-family: sans-serif; text-align: center; background: #f4f7f6; color: #333; }
+.wheel-container { position: relative; width: 320px; height: 320px; margin: 40px auto; }
 #wheel {
   width: 100%;
   height: 100%;
@@ -14,24 +13,36 @@ body { font-family: sans-serif; text-align: center; background: #f4f7f6; }
 
 .pointer {
   position: absolute;
-  top: -20px;
+  top: -25px; /* 往上提一點 */
   left: 50%;
   transform: translateX(-50%);
-  font-size: 30px;
+  font-size: 40px; /* 加大箭頭 */
   color: #ff4757;
   z-index: 10;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  line-height: 1;
 }
 
-textarea { width: 80%; height: 100px; margin-bottom: 10px; padding: 10px; border-radius: 8px; }
-select, button { padding: 10px 20px; margin: 5px; cursor: pointer; border-radius: 5px; border: 1px solid #ddd; }
-button { background: #6c5ce7; color: white; border: none; font-weight: bold; }
+#wheel {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 8px solid #fff; /* 增加邊框質感 */
+  box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+  position: relative;
+  transition: transform 4s cubic-bezier(0.15, 0, 0.15, 1);
+  overflow: hidden;
+}
+
+textarea { width: 80%; height: 100px; margin-bottom: 10px; padding: 10px; border-radius: 8px; border: 1px solid #ccc; font-size: 16px; }
+select, button { padding: 12px 20px; margin: 5px; cursor: pointer; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
+button { background: #6c5ce7; color: white; border: none; font-weight: bold; transition: 0.3s; }
+button:hover { background: #5641e5; }
 button:disabled { background: #ccc; cursor: not-allowed; }
 
-/* SVG 文字與路徑樣式 */
 .slice-text { font-size: 14px; font-weight: bold; fill: #333; pointer-events: none; }
 .slice-path.highlight { fill: rgba(255, 255, 255, 0.6) !important; transition: 0.2s; }
-
-#result { font-size: 24px; font-weight: bold; color: #2d3436; margin-top: 20px; }
+#result { font-size: 28px; font-weight: bold; color: #2d3436; margin-top: 30px; min-height: 40px; }
 svg {
   position: absolute;
   top: 0;
